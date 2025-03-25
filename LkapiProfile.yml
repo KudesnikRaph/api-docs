@@ -81,13 +81,82 @@ paths:
                     properties:
                       userId:
                         type: integer
-                        example: 12345
+                        example: 27
                       username:
                         type: string
-                        example: user_example
+                        example: Курьер № 1
                       fullName:
                         type: string
-                        example: John Doe
+                        example: Курьер № 1
+                      email:
+                        type: string
+                        example: null
+                      phone:
+                        type: string
+                        example: null
+                      role:
+                        type: object
+                        properties:
+                          roleCd:
+                            type: string
+                            example: def.platex_lk_application
+                          roleDn:
+                            type: string
+                            example: По умолчанию роль для абонента
+                          roleId:
+                            type: integer
+                            example: 44
+                          roleNm:
+                            type: string
+                            example: По умолчанию роль для абонента
+                      status:
+                        type: object
+                        properties:
+                          isArchived:
+                            type: boolean
+                            example: false
+                          isDeleted:
+                            type: boolean
+                            example: false
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2025-02-17T14:26:56.863928+03"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2025-03-06T18:34:48.061553+03"
+                      creator:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 21
+                          name:
+                            type: string
+                            example: Tester:arav
+                      updater:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 21
+                          name:
+                            type: string
+                            example: Tester:arav
+                      note:
+                        type: string
+                        example: Тест
+                      address:
+                        type: string
+                        example: null
+                      attributes:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          "3": "Вовчик"
+                          "87": "gdfgdsd"
         '400':
           description: Bad Request
         '500':
@@ -98,4 +167,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
