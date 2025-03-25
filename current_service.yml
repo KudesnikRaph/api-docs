@@ -1,0 +1,388 @@
+openapi: 3.1.0
+info:
+  title: LKAPI Current Service API
+  description: API для получения текущей информации о сервисах.
+  version: "1.1.21"
+servers:
+  - url: https://apilk.iqdata.net/index.php
+    description: Production Server
+paths:
+  /lkapi.current_service:
+    get:
+      summary: Получить текущую информацию о сервисах
+      description: Возвращает список текущих услуг для указанного аккаунта.
+      parameters:
+        - name: _debug
+          in: query
+          required: false
+          description: Флаг отладки (1 - включить, 0 - выключить)
+          schema:
+            type: integer
+            examples: [1, 0]
+        - name: _tz
+          in: query
+          required: false
+          description: Таймзона в минутах (например, 120 для GMT+2)
+          schema:
+            type: integer
+            examples: [120]
+        - name: _schema
+          in: query
+          required: false
+          description: Схема данных (например, "lkapi")
+          schema:
+            type: string
+            examples: ["lkapi"]
+      responses:
+        '200':
+          description: Успешный ответ с данными о текущих сервисах.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      app:
+                        type: string
+                        examples: ["platex-rest-api"]
+                      version:
+                        type: string
+                        examples: ["1.1.21"]
+                      server_date:
+                        type: string
+                        format: date-time
+                        examples: ["2025-03-25T06:27:16Z"]
+                      status:
+                        type: integer
+                        examples: [200]
+                      time_ms:
+                        type: integer
+                        examples: [135]
+                      token:
+                        type: object
+                        properties:
+                          token:
+                            type: string
+                            examples: ["2a06ddba-7aa5-4cd9-8bb9-2efc2c5b783d"]
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        account_dn:
+                          type: string
+                          nullable: true
+                          examples: ["94d28d19-1e62-4a4f-b46e-9bbc4a059152", null]
+                        account_dt:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          examples: ["2025-03-05T23:00:00+02", null]
+                        account_id:
+                          type: integer
+                          nullable: true
+                          examples: [4, null]
+                        account_no:
+                          type: string
+                          nullable: true
+                          examples: ["94d28d19-1e62-4a4f-b46e-9bbc4a059152", null]
+                        actual_account_dn:
+                          type: string
+                          examples: ["94d28d19-1e62-4a4f-b46e-9bbc4a059152"]
+                        actual_account_id:
+                          type: integer
+                          examples: [4]
+                        actual_begin_dt:
+                          type: string
+                          format: date-time
+                          examples: ["2025-03-05T23:00:00+02"]
+                        actual_end_dt:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        actual_is_archived:
+                          type: boolean
+                          examples: [false]
+                        actual_is_deleted:
+                          type: boolean
+                          examples: [false]
+                        actual_object_dn:
+                          type: string
+                          examples: ["ЦОД"]
+                        actual_object_id:
+                          type: integer
+                          examples: [2]
+                        actual_period:
+                          type: string
+                          examples: ["05.03.2025 23:00"]
+                        actual_service_kind_dn:
+                          type: string
+                          examples: ["Интернет"]
+                        actual_service_kind_id:
+                          type: integer
+                          examples: [2]
+                        addr_j:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        attr_j:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        begin_dt:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        bill_group_cd:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        bill_group_dn:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        bill_group_id:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        bill_group_nm:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        changed:
+                          type: string
+                          format: date-time
+                          examples: ["2025-03-06 17:44:47.459296+02"]
+                        changer:
+                          type: string
+                          examples: ["Tester:arav"]
+                        changer_id:
+                          type: integer
+                          examples: [21]
+                        chg:
+                          type: integer
+                          examples: [171676]
+                        clsf_j:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        contract_dn:
+                          type: string
+                          examples: ["Договор Тестовича от 05.03.2025"]
+                        contract_dt:
+                          type: string
+                          format: date-time
+                          examples: ["2025-03-05 23:00:00+02"]
+                        contract_id:
+                          type: integer
+                          examples: [16]
+                        contract_no:
+                          type: string
+                          examples: ["Договор Тестовича"]
+                        cost:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        cost_dn:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        created:
+                          type: string
+                          format: date-time
+                          examples: ["2025-03-06 17:44:47.459296+02"]
+                        creator:
+                          type: string
+                          examples: ["Tester:arav"]
+                        creator_id:
+                          type: integer
+                          examples: [21]
+                        curr_dn:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        curr_id:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        customer_dn:
+                          type: string
+                          examples: ["Test Testerovich"]
+                        customer_id:
+                          type: integer
+                          examples: [6]
+                        display_name:
+                          type: string
+                          examples: ["1 IP адрес"]
+                        end_dt:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        group_name:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        is_archived:
+                          type: boolean
+                          examples: [false]
+                        is_deleted:
+                          type: boolean
+                          examples: [false]
+                        is_once:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        name:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        note:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        object_cd:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        object_dn:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        object_id:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        object_nm:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        operator_cd:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        operator_dn:
+                          type: string
+                          examples: ["Тестовый продавец"]
+                        operator_id:
+                          type: integer
+                          examples: [8]
+                        operator_nm:
+                          type: string
+                          examples: ["Тестовый продавец"]
+                        pack_cd:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        pack_dn:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        pack_id:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        pack_nm:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        par_service_dn:
+                          type: string
+                          examples: ["Тестовая группа услуг"]
+                        par_service_id:
+                          type: integer
+                          examples: [5]
+                        par_service_nm:
+                          type: string
+                          examples: ["Тестовая группа услуг"]
+                        plan_kind_code:
+                          type: string
+                          examples: ["charge"]
+                        plan_kind_id:
+                          type: integer
+                          examples: [2]
+                        plan_kind_name:
+                          type: string
+                          examples: ["Начисляемый"]
+                        plan_name:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        service_id:
+                          type: integer
+                          examples: [11]
+                        service_kind_cd:
+                          type: string
+                          examples: ["I"]
+                        service_kind_dn:
+                          type: string
+                          examples: ["Интернет"]
+                        service_kind_id:
+                          type: integer
+                          examples: [2]
+                        service_kind_nm:
+                          type: string
+                          examples: ["Интернет"]
+                        service_level:
+                          type: integer
+                          examples: [1]
+                        service_type_cd:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        service_type_dn:
+                          type: string
+                          examples: ["1 IP адрес"]
+                        service_type_id:
+                          type: integer
+                          examples: [13]
+                        service_type_nm:
+                          type: string
+                          examples: ["1 IP адрес"]
+                        service_type_sh:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        sp_begin_dt:
+                          type: string
+                          format: date-time
+                          examples: ["2025-03-05 23:00:00+02"]
+                        sp_end_dt:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        spc_service_plan_id:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        spt_service_plan_id:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        status_cd:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        status_dn:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        status_id:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        status_nm:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
+                        unit_id:
+                          type: integer
+                          examples: [28]
+                        unit_sh:
+                          type: string
+                          examples: ["шт"]
+                        zone_set_dn:
+                          type: "null"
+                          nullable: true
+                          examples: [null]
