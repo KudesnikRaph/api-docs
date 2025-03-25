@@ -1,106 +1,101 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
-  title: Profile API
+  title: API Documentation for LKAPI
+  description: API for accessing user profile information.
   version: 1.0.0
 servers:
   - url: https://apilk.iqdata.net
+    description: Main server for LKAPI
+    variables:
+      host:
+        default: apilk.iqdata.net
 paths:
   /index.php/lkapi.profile:
     get:
-      summary: Получение профиля пользователя
+      summary: Get user profile data
+      description: Retrieve profile information based on the given parameters.
+      operationId: getProfile
       parameters:
         - name: _debug
           in: query
+          description: Enable debug mode
           required: false
           schema:
             type: integer
             default: 1
         - name: _tz
           in: query
+          description: Timezone offset in minutes
           required: false
           schema:
             type: integer
             default: 180
         - name: _schema
           in: query
+          description: Schema identifier for the request
           required: false
           schema:
             type: string
             default: lkapi
         - name: token
           in: header
+          description: Token for user authentication
           required: true
           schema:
             type: string
+        - name: db
+          in: header
+          description: Database identifier
+          required: true
+          schema:
+            type: string
+            example: imaqliq_abonent
+        - name: _app
+          in: header
+          description: Application version identifier
+          required: true
+          schema:
+            type: string
+            example: platex_lk_application;1.1.10
+        - name: Origin
+          in: header
+          description: Origin of the request
+          required: true
+          schema:
+            type: string
+            example: https://lk.iqdata.net
       responses:
-        "200":
-          description: Успешный ответ
+        '200':
+          description: OK
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: string
-                    example: OK
+                  success:
+                    type: boolean
+                    example: true
                   data:
                     type: object
-              examples:
-                success:
-                  summary: Пример успешного ответа
-                  value:
-                    {
-                      "status": "OK",
-                      "data": {
-                        "id": 123,
-                        "name": "Иван Иванов",
-                        "email": "ivan@example.com"
-                      }
-                    }
-        "401":
-          description: Неавторизованный доступ
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Unauthorized"
-                  message:
-                    type: string
-                    example: "Invalid or missing token"
-        "500":
-          description: Внутренняя ошибка сервера
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Internal Server Error"
-                  message:
-                    type: string
-                    example: "Unexpected error occurred"
+                    description: Profile data
+                    properties:
+                      userId:
+                        type: integer
+                        example: 12345
+                      username:
+                        type: string
+                        example: user_example
+                      fullName:
+                        type: string
+                        example: John Doe
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
 components:
   securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: token
-  schemas:
-    UserProfile:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 123
-        name:
-          type: string
-          example: "Иван Иванов"
-        email:
-          type: string
-          example: "ivan@example.com"
-security:
-  - ApiKeyAuth: []
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
