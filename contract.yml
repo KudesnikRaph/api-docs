@@ -4,23 +4,52 @@ info:
   description: API для получения информации о контрактах.
   version: "1.1.21"
 servers:
-  - url: https://apilk.iqdata.net/index.php
-    description: Production Server
+  - url: https://apilk.iqdata.net
+    description: Основной сервер для LKAPI
+    variables:
+      host:
+        default: apilk.iqdata.net
 paths:
-  /lkapi.contract:
+  /index.php/lkapi.contract:
     get:
       summary: Получить информацию о контрактах
       description: Возвращает список контрактов для указанного аккаунта.
+      operationId: getContracts
       parameters:
         - name: _debug
           in: query
-          required: false
           description: Флаг отладки (1 - включить, 0 - выключить)
+          required: false
           schema:
             type: integer
-            examples: [1, 0]
-      security:
-        - bearerAuth: []
+            default: 0
+        - name: token
+          in: header
+          description: Токен для аутентификации пользователя
+          required: true
+          schema:
+            type: string
+        - name: db
+          in: header
+          description: Идентификатор базы данных
+          required: true
+          schema:
+            type: string
+            example: imaqliq_abonent
+        - name: _app
+          in: header
+          description: Идентификатор версии приложения
+          required: true
+          schema:
+            type: string
+            example: platex_lk_application;1.1.10
+        - name: Origin
+          in: header
+          description: Происхождение запроса
+          required: true
+          schema:
+            type: string
+            example: https://lk.iqdata.net
       responses:
         '200':
           description: Успешный ответ с данными о контрактах.
@@ -34,50 +63,64 @@ paths:
                     properties:
                       app:
                         type: string
-                        examples: ["platex-rest-api"]
+                        example: platex-rest-api
                       version:
                         type: string
-                        examples: ["1.1.21"]
+                        example: 1.1.21
                       server_date:
                         type: string
                         format: date-time
-                        examples: ["2025-03-25 08:49:33"]
+                        example: "2025-03-25T08:49:33"
                       status:
                         type: integer
-                        examples: [200]
+                        example: 200
                       time_ms:
                         type: integer
-                        examples: [30]
+                        example: 30
                       token:
                         type: object
                         properties:
                           token:
                             type: string
-                            examples: ["2a06ddba-7aa5-4cd9-8bb9-2efc2c5b783d"]
+                            example: 2a06ddba-7aa5-4cd9-8bb9-2efc2c5b783d
                       method:
                         type: string
-                        examples: ["GET"]
+                        example: GET
                       path:
                         type: array
                         items:
                           type: string
-                        examples: [["lkapi.contract"]]
+                        example: [lkapi.contract]
                       act:
                         type: string
-                        examples: ["s"]
+                        example: s
                       in:
                         type: array
                         items:
                           type: string
-                        examples: [[]]
+                        example: []
                       sql_info:
                         type: string
-                        examples: ["1 queries, 0.013 sec"]
+                        example: "1 queries, 0.013 sec"
                   data:
                     type: array
                     items:
                       type: object
-                      # Описание полей контракта (в зависимости от структуры данных)
+                      properties:
+                        account_dn:
+                          type: string
+                          example: "94d28d19-1e62-4a4f-b46e-9bbc4a059152"
+                        account_id:
+                          type: integer
+                          example: 4
+                        contract_no:
+                          type: string
+                          example: "Договор Тестовича"
+                        created:
+                          type: string
+                          format: date-time
+                          example: "2025-03-06T17:44:47.459296+02"
+                        # Добавьте другие поля контракта по мере необходимости
         '401':
           description: Ошибка аутентификации (неверный токен).
           content:
@@ -90,62 +133,32 @@ paths:
                     properties:
                       app:
                         type: string
-                        examples: ["platex-rest-api"]
+                        example: platex-rest-api
                       version:
                         type: string
-                        examples: ["1.1.21"]
+                        example: 1.1.21
                       server_date:
                         type: string
                         format: date-time
-                        examples: ["2025-03-25 08:49:33"]
+                        example: "2025-03-25T08:49:33"
                       status:
                         type: integer
-                        examples: [401]
+                        example: 401
                       time_ms:
                         type: integer
-                        examples: [30]
+                        example: 30
                       token:
                         type: object
                         properties:
                           error:
                             type: string
-                            examples: ["Bad access token"]
+                            example: "Bad access token"
                       method:
                         type: string
-                        examples: ["GET"]
+                        example: GET
                       path:
                         type: array
                         items:
                           type: string
-                        examples: [["lkapi.contract"]]
+                        example: [lkapi.contract]
                       act:
-                        type: string
-                        examples: ["s"]
-                      in:
-                        type: array
-                        items:
-                          type: string
-                        examples: [[]]
-                      sql_info:
-                        type: string
-                        examples: ["1 queries, 0.013 sec"]
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        status:
-                          type: integer
-                          examples: [401]
-                        code:
-                          type: integer
-                          examples: [401]
-                        title:
-                          type: string
-                          examples: ["Access token not valid"]
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
