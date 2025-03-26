@@ -1,0 +1,119 @@
+openapi: 3.1.0
+info:
+  title: API Documentation for LKAPI
+  description: API for accessing customer information.
+  version: 1.0.0
+servers:
+  - url: https://apilk.iqdata.net
+    description: Main server for LKAPI
+    variables:
+      host:
+        default: apilk.iqdata.net
+paths:
+  /index.php/lkapi.customer:
+    get:
+      summary: Retrieve customer data
+      description: Fetches customer information including company ID and display name.
+      operationId: getCustomer
+      parameters:
+        - name: fields
+          in: query
+          required: true
+          description: Comma-separated list of fields to return (e.g., company_id, display_name).
+          schema:
+            type: string
+            examples:
+              - "company_id,display_name"
+        - name: sort
+          in: query
+          required: false
+          description: Field to sort the results by.
+          schema:
+            type: string
+            examples:
+              - "display_name"
+        - name: _debug
+          in: query
+          required: false
+          description: Enable debug mode.
+          schema:
+            type: integer
+            default: 1
+        - name: _tz
+          in: query
+          required: false
+          description: Timezone offset in minutes.
+          schema:
+            type: integer
+            default: 120
+        - name: _schema
+          in: query
+          required: false
+          description: Schema identifier for the request.
+          schema:
+            type: string
+            default: lkapi
+        - name: token
+          in: header
+          description: Token for user authentication (required).
+          required: true
+          schema:
+            type: string
+        - name: db
+          in: header
+          description: Database identifier (automatically filled).
+          required: false
+          schema:
+            type: string
+            default: imaqliq_abonent
+        - name: _app
+          in: header
+          description: Application version identifier (automatically filled).
+          required: false
+          schema:
+            type: string
+            default: platex_lk_application;1.1.10
+        - name: Origin
+          in: header
+          description: Origin of the request (automatically filled).
+          required: false
+          schema:
+            type: string
+            default: https://lk.iqdata.net
+      responses:
+        '200':
+          description: Successful response with customer data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    examples:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        company_id:
+                          type: string
+                          description: The ID of the company.
+                          examples:
+                            - "12345"
+                        display_name:
+                          type: string
+                          description: The display name of the company.
+                          examples:
+                            - "Example Company"
+        '400':
+          description: Bad request, invalid parameters.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
