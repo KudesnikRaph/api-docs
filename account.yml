@@ -15,6 +15,8 @@ paths:
       summary: Get account data
       description: Retrieve account information based on the given parameters.
       operationId: getAccount
+      tags:
+        - Account
       parameters:
         - name: filters[class_cd-e-9]
           in: query
@@ -100,35 +102,80 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    examples:
-                      - true
-                  data:
+                  meta:
                     type: object
-                    description: Account data
                     properties:
-                      accountId:
+                      app:
+                        type: string
+                        examples:
+                          - platex-rest-api
+                      version:
+                        type: string
+                        examples:
+                          - 1.1.21
+                      server_date:
+                        type: string
+                        examples:
+                          - "2025-03-26 06:11:12"
+                      status:
                         type: integer
                         examples:
-                          - 123
-                      balance:
-                        type: number
-                        format: float
+                          - 200
+                      time_ms:
+                        type: integer
                         examples:
-                          - 1000.50
-                      changes:
-                        type: number
-                        format: float
+                          - 91
+                      token:
+                        type: object
+                        properties:
+                          token:
+                            type: string
+                            examples:
+                              - "2af785ec-8d00-4faa-88b1-d5800e7d3c6e"
+                      method:
+                        type: string
                         examples:
-                          - 50.00
-        '400':
-          description: Bad Request
-        '500':
-          description: Internal Server Error
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+                          - GET
+                      path:
+                        type: array
+                        items:
+                          type: string
+                          examples:
+                            - lkapi.account
+                      act:
+                        type: string
+                        examples:
+                          - s
+                      in:
+                        type: object
+                        properties:
+                          filters:
+                            type: object
+                            properties:
+                              class_cd-e-9:
+                                type: string
+                                examples:
+                                  - pers_account
+                          limit:
+                            type: string
+                            examples:
+                              - "20"
+                          totals:
+                            type: object
+                            properties:
+                              balance:
+                                type: string
+                                examples:
+                                  - sum
+                              chg:
+                                type: string
+                                examples:
+                                  - sum
+                      sql_info:
+                        type: string
+                        examples:
+                          - "5 queries, 0.075 sec"
+                      ref_table:
+                        type: string
+                        examples:
+                          - lkapi
