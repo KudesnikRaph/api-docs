@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: LKAPI Customer API
+  description: API для получения информации о клиентах.
+  version: 1.0.0
+servers:
+  - url: https://apilk.iqdata.net
+    description: Основной сервер LKAPI
+paths:
+  /index.php/lkapi.customer:
+    get:
+      summary: Получение данных о клиентах
+      description: Эндпоинт для получения списка клиентов с возможностью сортировки и фильтрации.
+      operationId: getCustomers
+      parameters:
+        - name: fields
+          in: query
+          description: Список полей, которые необходимо вернуть
+          required: true
+          schema:
+            type: string
+          examples:
+            fields_example:
+              summary: Пример запроса полей
+              value: "company_id,display_name"
+        - name: sort
+          in: query
+          description: Поле, по которому необходимо выполнить сортировку
+          required: false
+          schema:
+            type: string
+          examples:
+            sort_example:
+              summary: Пример сортировки
+              value: "display_name"
+        - name: _debug
+          in: query
+          description: Включение режима отладки
+          required: false
+          schema:
+            type: integer
+            default: 1
+          examples:
+            debug_example:
+              summary: Включение отладки
+              value: 1
+        - name: _tz
+          in: query
+          description: Смещение временной зоны в минутах
+          required: false
+          schema:
+            type: integer
+            default: 180
+          examples:
+            tz_example:
+              summary: Смещение временной зоны
+              value: 180
+        - name: _schema
+          in: query
+          description: Идентификатор схемы для запроса
+          required: false
+          schema:
+            type: string
+            default: lkapi
+          examples:
+            schema_example:
+              summary: Идентификатор схемы
+              value: "lkapi"
+        - name: token
+          in: header
+          description: Токен для аутентификации пользователя
+          required: true
+          schema:
+            type: string
+          examples:
+            token_example:
+              summary: Пример токена
+              value: "311998fe-b78e-42fb-9796-c359e894eb49"
+        - name: db
+          in: header
+          description: Идентификатор базы данных
+          required: true
+          schema:
+            type: string
+          examples:
+            db_example:
+              summary: Пример базы данных
+              value: imaqliq_abonent
+        - name: _app
+          in: header
+          description: Идентификатор версии приложения
+          required: true
+          schema:
+            type: string
+          examples:
+            app_example:
+              summary: Версия приложения
+              value: platex_lk_application;1.1.10
+        - name: Origin
+          in: header
+          description: Источник запроса
+          required: true
+          schema:
+            type: string
+          examples:
+            origin_example:
+              summary: Источник запроса
+              value: https://lk.iqdata.net
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        company_id:
+                          type: integer
+                        display_name:
+                          type: string
+              examples:
+                success_example:
+                  summary: Пример успешного ответа
+                  value:
+                    success: true
+                    data:
+                      - company_id: 123
+                        display_name: "ООО Рога и Копыта"
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Внутренняя ошибка сервера
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
