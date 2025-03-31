@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: API Documentation for LKAPI
   description: API for accessing user profile information.
@@ -102,26 +102,22 @@ paths:
                 properties:
                   success:
                     type: boolean
-                    examples:
-                      - true
+                    example: true
                   data:
                     type: object
                     description: Account data
                     properties:
                       accountId:
                         type: integer
-                        examples:
-                          - 123
+                        example: 123
                       balance:
                         type: number
                         format: float
-                        examples:
-                          - 1000.50
+                        example: 1000.50
                       changes:
                         type: number
                         format: float
-                        examples:
-                          - 50.00
+                        example: 50.00
         '400':
           description: Bad Request
         '500':
